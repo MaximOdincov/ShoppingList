@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">ShoppingList</string>
     <string name="shop_list">SHOP LIST</string>
+    <string name="count">Count</string>
+    <string name="name">Name</string>
+    <string name="next">Next</string>
 </resources>
