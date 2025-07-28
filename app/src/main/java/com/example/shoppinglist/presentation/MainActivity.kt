@@ -1,21 +1,28 @@
 package com.example.shoppinglist.presentation
 
+import EditShopItemFragment
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isNotEmpty
+import androidx.fragment.app.FragmentContainer
+import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoppinglist.R
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), EditShopItemFragment.OnEditingFinishedListener {
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var shopListAdapter: ShopListAdapter
+    private var shopItemContainer: FragmentContainerView?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,6 +32,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        shopItemContainer = findViewById(R.id.shop_item_container)
         viewModel = ViewModelProvider(this)[MainActivityViewModel::class.java]
         setUpRecyclerView()
         setupButton()
@@ -77,17 +85,42 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupClickListener() {
         shopListAdapter.shopItemClickListener = {
-            val intent = EditShopListActivity.newIntentEditing(this, it.id)
-            startActivity(intent)
+            if(shopItemContainer == null){
+                val intent = EditShopListActivity.newIntentEditItem(this, it.id)
+                startActivity(intent)
+            }
+            else{
+                val fragment = EditShopItemFragment.newInstanceEdit(it.id)
+                supportFragmentManager.popBackStack()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.shop_item_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+
         }
     }
 
     private fun setupButton(){
         val button = findViewById<FloatingActionButton>(R.id.floatingActionButton)
         button.setOnClickListener{
-            val intent = EditShopListActivity.newIntentAdding(this)
-            startActivity(intent)
+            if(shopItemContainer == null){
+                val intent = EditShopListActivity.newIntentAddItem(this)
+                startActivity(intent)
+            }
+            else{
+                supportFragmentManager.popBackStack()
+                val fragment = EditShopItemFragment.newInstanceAdd()
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.shop_item_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
+    }
+
+    override fun onEditingFinished() {
+        Toast.makeText(this@MainActivity, "Success", Toast.LENGTH_SHORT).show()
     }
 
 }
