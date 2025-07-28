@@ -1,6 +1,5 @@
 # Shopping List App (Kotlin Learning Project)
 
-![App Screenshot](screenshot.png) <!-- Add your screenshot later -->
 
 A simple shopping list application built with Kotlin, exploring Android development best practices.
 
