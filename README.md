@@ -11,6 +11,7 @@ A simple shopping list application built with Kotlin, exploring Android developm
 ## Learning Objectives
 - First Kotlin Android project
 - Proper RecyclerView implementation
+- Room Database + Coroutines
 - Fragment management and communication
 - Clean architecture principles
 - Adaptive layouts (different UIs for portrait/landscape)
@@ -20,6 +21,7 @@ A simple shopping list application built with Kotlin, exploring Android developm
 - **UI**: Activities + Fragments (single activity in landscape)
 - **Architecture**: Clean Architecture approach
 - **Components**:
+  - Room 
   - RecyclerView with ViewHolder
   - Fragment transactions
   - Intent-based navigation
